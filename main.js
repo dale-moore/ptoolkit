@@ -61,7 +61,7 @@ ipc.on('main-tip-deleted', (event, aId) => {
 // DONE - change (Add) button to be the default enter button.
 // DONE - change renderer.js to indexrenderer.js for clarity
 // DONE - move code to new folder
-// create GIT repo
+// DONE - create GIT repo
 // run program in the system tray
 // create edit tip
 // Create copy to clipboard feature when tip is clicked with a little note that says it was copied
