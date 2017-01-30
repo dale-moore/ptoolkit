@@ -1,0 +1,83 @@
+@startuml
+
+== load modules ==
+activate main.js
+main.js --/ tiplogic.js : require(tiplogic)
+main.js --/ index.html : BrowserWindow.load(...)
+deactivate main.js
+activate index.html
+
+index.html --/ indexrenderer.js : <scrip src="...">
+
+== tip file loading ==
+index.html -> index.html : form load complete event
+activate index.html
+index.html --/ indexrenderer.js : onFormLoadComplete()
+activate indexrenderer.js
+deactivate index.html
+deactivate index.html
+
+indexrenderer.js --/ main.js : ipc.send('main-window-loaded')
+deactivate indexrenderer.js
+activate main.js
+
+main.js -> tiplogic.js : loadTips()
+activate tiplogic.js
+tiplogic.js -> tiplogic.js : readTipsFileIntoJsonObject()
+loop for each tip in JSON Object
+  tiplogic.js -> indexrenderer.js : windowToNotify.webContents.send('add-tip-from-file-event', jsonKey, jsonContent[jsonKey]);
+end loop
+activate indexrenderer.js
+indexrenderer.js -> indexrenderer.js : addNewTipToUI(...)
+activate indexrenderer.js
+indexrenderer.js --/ index.html : add tip to <ul><li>
+deactivate indexrenderer.js
+tiplogic.js <-- indexrenderer.js
+deactivate indexrenderer.js
+main.js <-- tiplogic.js
+deactivate tiplogic.js
+deactivate main.js
+
+== add new tip ==
+index.html --/ indexrenderer.js : div.onClick().onNewTipEntered()
+activate indexrenderer.js
+indexrenderer.js -> indexrenderer.js : get tip value and raise error is null
+indexrenderer.js -> indexrenderer.js : generateUUID();
+indexrenderer.js -> indexrenderer.js : addNewTipToUI();
+activate indexrenderer.js
+indexrenderer.js --/ index.html : add tip to <ul><li>
+deactivate indexrenderer.js
+indexrenderer.js --/ main.js : ipc.send('main-tip-added',aId,aTip)
+deactivate indexrenderer.js
+
+activate main.js
+main.js -> tiplogic.js : addNewTip(...)
+activate tiplogic.js
+tiplogic.js -> tiplogic.js : readTipsFileIntoJsonObject()
+tiplogic.js -> tiplogic.js : addTipToJson(...)
+tiplogic.js -> tiplogic.js : saveTipsFile()
+tiplogic.js --> main.js
+deactivate tiplogic.js
+deactivate main.js
+
+== delete tip ==
+index.html --/ indexrenderer.js : div.onClick.onDeleteTip()
+activate indexrenderer.js
+indexrenderer.js -> indexrenderer.js : confirmTipDelete();
+alt true
+  indexrenderer.js --/ index.html : hide tip
+  indexrenderer.js -/ main.js : ipc.send('main-tip-deleted', aId)
+  activate main.js
+  main.js -> tiplogic.js : deleteTip(aId)
+  activate tiplogic.js
+  tiplogic.js -> tiplogic.js : readTipsFileIntoJsonObject()
+  tiplogic.js -> tiplogic.js : deleteTipFromJson(...)
+  tiplogic.js -> tiplogic.js : saveTipsFile()
+  tiplogic.js --> main.js
+  deactivate tiplogic.js
+  deactivate main.js
+else user will not be deleting tip
+  deactivate indexrenderer.js
+end
+
+@enduml

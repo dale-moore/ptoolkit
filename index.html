@@ -1,0 +1,29 @@
+<html>
+<head><title>Programmer's Toolbox</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body onload="onFormLoadComplete()">
+
+  <div id="myDIV" class="header">
+      <h2>Tips</h2>
+      <input type="text" id="myInput" placeholder="Enter tip..." onkeypress="handleKeyPress(event)">
+      <span onclick="onNewTipEntered()" class="addBtn">Add</span>
+  </div>
+
+  <ul id="myTipList">
+    <!-- <li> items will be added as tips are added -->
+  </ul>
+
+  <script src="indexrenderer.js"></script>
+  <script>
+      function handleKeyPress(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            onNewTipEntered();
+        }
+      }
+  </script>
+
+</body>
+</html>
