@@ -50,17 +50,14 @@ DONE - design icon (png) for the system tray
 
 ###create new feature for executing batch or command files.
 - add commands to the context menu
-
 - allow commands to be grouped under context menu
-
 - create a way to open Windows Explorer to a particular folder.
-
 - call a batch file that deletes log files.
 
 ###create new feature for creating PlantUML from Java file
---    select the JAVA file
---    select generate
---    output the text to a window for copy/paste
+-    select the JAVA file
+-    select generate
+-    output the text to a window for copy/paste
 ###create new feature for managing a to-do list and keeping track of
---    completed tasks w/search ability.
+-    completed tasks w/search ability.
 ###Redesign system tray logo
