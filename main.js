@@ -3,6 +3,9 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const fs = require('fs');
 const ipc = electron.ipcMain;
+const path = require('path');
+const {Menu, Tray} = electron;
+
 var tipslogic = require('./tipslogic');
 
 let mainWindow;
@@ -18,12 +21,49 @@ app.on('ready', () => {
 
     console.log("mapping to closed event");
     mainWindow.on('closed', _ => {
+       // event raised as the browser window is dismissed
        console.log('closed');
        mainWindow = null;
-    })
+    });
 
-    console.log("loading index.html");
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+    console.log("creating tray object and context menu")
+    //var imagePath = path.join("images", "ptray-icon.png_32x32.png")
+    var imagePath = path.join("images", "ptray-icon.ico")
+    const tray = new Tray(imagePath)
+    const contextMenu = Menu.buildFromTemplate([
+          {
+               label:  'Exit ', // this is what the user sees
+               click: _ => {
+                 console.log("quitting the application");
+                 app.quit();
+               }
+          }
+     ]);
+     tray.setToolTip('Programmers Tray');
+     tray.setContextMenu(contextMenu);
+     tray.on('click', () => {
+        console.log("Programmer's Tray icon Click");
+        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+     })
+
+     mainWindow.on('show', () => {
+        // event raised when the tray icon is left clicked
+        console.log("Programmer's Tray show event");
+        tray.setHighlightMode('always');
+     });
+     mainWindow.on('hide', () => {
+        // event raised when the tray icon is left clicked
+        console.log("Programmer's Tray hide event");
+        tray.setHighlightMode('never');
+     });
+     mainWindow.on('minimize', () => {
+        console.log("Programmer's Tray minimize event");
+        mainWindow.hide();
+     })
+
+     console.log("loading index.html");
+     mainWindow.loadURL(`file://${__dirname}/index.html`);
 })
 
 /**
@@ -63,6 +103,7 @@ ipc.on('main-tip-deleted', (event, aId) => {
 // DONE - move code to new folder
 // DONE - create GIT repo
 // run program in the system tray
+//    design icon (png) for the system tray
 // create edit tip
 // Create copy to clipboard feature when tip is clicked with a little note that says it was copied
 // change to Photon
@@ -71,4 +112,6 @@ ipc.on('main-tip-deleted', (event, aId) => {
 // create auto-updater
 // run program when the computer starts
 // create new feature for creating PlantUML from Java file
+// create new feature for managing a to-do list and keeping track of completed tasks w/search ability.
+// create new feature for executing batch or command files
 // create new feature for editing the program preferences
