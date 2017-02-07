@@ -21,7 +21,7 @@ wherever it is needed.
 // DONE - move code to new folder
 // DONE - create GIT repo
 // DONE - run program in the system tray
-//    design icon (png) for the system tray
+// DONE - design icon (png) for the system tray
 // create edit tip
 // Create copy to clipboard feature when tip is clicked with a little note that says it was copied
 // change to Photon
@@ -29,7 +29,15 @@ wherever it is needed.
 // create deployment
 // create auto-updater
 // run program when the computer starts
+// create new feature for executing batch or command files.
+//    add commands to the context menu
+//    allow commands to be grouped under context menu
+//    create a way to open Windows Explorer to a particular folder.
+//    call a batch file that deletes log files.
 // create new feature for creating PlantUML from Java file
-// create new feature for managing a to-do list and keeping track of completed tasks w/search ability.
-// create new feature for executing batch or command files
-// create new feature for editing the program preferences
+//    select the JAVA file
+//    select generate
+//    output the text to a window for copy/paste
+// create new feature for managing a to-do list and keeping track of
+//    completed tasks w/search ability.
+// Redesign system tray logo

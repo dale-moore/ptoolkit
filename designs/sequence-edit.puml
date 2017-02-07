@@ -1,5 +1,16 @@
 @startuml
-
-
+title: Edit Tip - https://github.com/electron/electron/blob/master/docs/api/browser-window.md
+== edit tip ==
+index.html --/ indexrenderer.js : div.onClick.onEditTip()
+activate indexrenderer.js
+indexrenderer.js --> indexrenderer.js : showEditTipModal()
+activate indexrenderer.js
+indexrenderer.js --/ edit.html : BrowserWindow.load(...)
+deactivate indexrenderer.js
+edit.html --/ editrenderer.js : <script src="...">
+deactivate indexrenderer.js
+edit.html --/ indexrenderer.js : 'ready-to-show'
+activate indexrenderer.js
+indexrenderer.js -> editrenderer.js : setTipText()
 
 @enduml
