@@ -1,0 +1,23 @@
+@startuml
+== add new tip ==
+index.html --/ indexrenderer.js : div.onClick().onNewTipEntered()
+activate indexrenderer.js
+indexrenderer.js -> indexrenderer.js : get tip value and raise error is null
+indexrenderer.js -> indexrenderer.js : generateUUID();
+indexrenderer.js -> indexrenderer.js : addNewTipToUI();
+activate indexrenderer.js
+indexrenderer.js --/ index.html : add tip to <ul><li>
+deactivate indexrenderer.js
+indexrenderer.js --/ main.js : ipc.send('main-tip-added',aId,aTip)
+deactivate indexrenderer.js
+
+activate main.js
+main.js -> tiplogic.js : addNewTip(...)
+activate tiplogic.js
+tiplogic.js -> tiplogic.js : readTipsFileIntoJsonObject()
+tiplogic.js -> tiplogic.js : addTipToJson(...)
+tiplogic.js -> tiplogic.js : saveTipsFile()
+tiplogic.js --> main.js
+deactivate tiplogic.js
+deactivate main.js
+@enduml

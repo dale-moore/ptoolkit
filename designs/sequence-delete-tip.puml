@@ -1,0 +1,22 @@
+@startuml
+== delete tip ==
+index.html --/ indexrenderer.js : div.onClick.onDeleteTip()
+activate indexrenderer.js
+indexrenderer.js -> indexrenderer.js : confirmTipDelete();
+alt true
+  indexrenderer.js --/ index.html : hide tip
+  indexrenderer.js -/ main.js : ipc.send('main-tip-deleted', aId)
+  activate main.js
+  main.js -> tiplogic.js : deleteTip(aId)
+  activate tiplogic.js
+  tiplogic.js -> tiplogic.js : readTipsFileIntoJsonObject()
+  tiplogic.js -> tiplogic.js : deleteTipFromJson(...)
+  tiplogic.js -> tiplogic.js : saveTipsFile()
+  tiplogic.js --> main.js
+  deactivate tiplogic.js
+  deactivate main.js
+else user will not be deleting tip
+  deactivate indexrenderer.js
+end
+
+@enduml
